@@ -148,6 +148,10 @@ class PSShopgatePlugin extends ShopgatePlugin
 	private function getProductIdentifiers(ShopgateOrderItem $item){
 		return explode('_', substr($item->getItemNumber(), strlen(self::prefix)));
 	}
+	
+	private function getOrderStateId($order_state_var) {
+		return (int)(defined($order_state_var) ? constant($order_state_var) : Configuration::get($order_state_var));
+	}
 
 	public function addOrder(ShopgateOrder $order)
 	{
@@ -270,17 +274,17 @@ class PSShopgatePlugin extends ShopgatePlugin
 		$payment_name = $shopgate->getTranslation('Mobile Payment');
 		
 		if($order->getIsPaid())
-			$id_order_state = (int)Configuration::get('PS_OS_PAYMENT');
+			$id_order_state = $this->getOrderStateId('PS_OS_PAYMENT');
 		else
 		{
 			switch($order->getPaymentMethod())
 			{
-				case 'SHOPGATE': 	$id_order_state = (int)Configuration::get('PS_OS_SHOPGATE'); $payment_name = $shopgate->getTranslation('Shopgate'); break;
-				case 'PREPAY': 		$id_order_state = (int)Configuration::get('PS_OS_BANKWIRE'); $payment_name = $shopgate->getTranslation('Bankwire'); break;
-				case 'COD': 		$id_order_state = (int)Configuration::get('PS_OS_PREPARATION'); $payment_name = $shopgate->getTranslation('Cash on Delivery'); break;
-				case 'PAYPAL': 		$id_order_state = (int)Configuration::get('PS_OS_PAYPAL'); $payment_name = $shopgate->getTranslation('PayPal'); break;
-				case 'DEBIT': $id_order_state = (int)Configuration::get('PS_OS_PREPARATION'); break;
-				default: 		$id_order_state = (int)Configuration::get('PS_OS_PREPARATION');  break;
+				case 'SHOPGATE': 	$id_order_state = $this->getOrderStateId('PS_OS_SHOPGATE'); $payment_name = $shopgate->getTranslation('Shopgate'); break;
+				case 'PREPAY': 		$id_order_state = $this->getOrderStateId('PS_OS_BANKWIRE'); $payment_name = $shopgate->getTranslation('Bankwire'); break;
+				case 'COD': 		$id_order_state = $this->getOrderStateId('PS_OS_PREPARATION'); $payment_name = $shopgate->getTranslation('Cash on Delivery'); break;
+				case 'PAYPAL': 		$id_order_state = $this->getOrderStateId('PS_OS_PAYPAL'); $payment_name = $shopgate->getTranslation('PayPal'); break;
+				case 'DEBIT':       $id_order_state = $this->getOrderStateId('PS_OS_PREPARATION'); break;
+				default: 		    $id_order_state = $this->getOrderStateId('PS_OS_PREPARATION');  break;
 			}
 		}
 		
@@ -703,5 +707,3 @@ class PSShopgatePlugin extends ShopgatePlugin
 		return $this->builder->buildRedirect();
 	}
 }
-
-?>
