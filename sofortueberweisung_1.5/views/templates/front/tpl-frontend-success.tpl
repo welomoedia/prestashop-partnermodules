@@ -1,0 +1,2 @@
+<h3>{l s='Payment successful' mod='sofortueberweisung'}</h3>
+<p>{l s='Thank you for your order. Your payment was successful. You will be notified by mail about the payment state.' mod='sofortueberweisung'}</p>

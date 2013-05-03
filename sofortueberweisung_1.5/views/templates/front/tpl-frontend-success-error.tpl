@@ -1,0 +1,2 @@
+<h2>{l s='Error while returing' mod='sofortueberweisung'}</h2>
+<p>{l s='Error while processing payment request. Please make sure, that the Success URL was set correctly in sofortüberweisung.de backend.' mod='sofortueberweisung'}</p>
