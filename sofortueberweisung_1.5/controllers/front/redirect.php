@@ -3,11 +3,13 @@ class SofortueberweisungRedirectModuleFrontController extends ModuleFrontControl
 {
     public function initContent()
     {
+	$this->display_column_left = false;
+	$this->display_column_right = false;
 	parent::initContent();
 
         $this->context = $this->context;
 	
-	if ( ! isset($this->context->customer) || ! $this->context->customer->isLogged() || $this->context->customer->is_guest) {
+	if ( ! isset($this->context->customer) || ! $this->context->customer->isLogged(true)) {
 	    Tools::redirect($this->context->link->getPageLink(
 		'authentication',
 		true,
